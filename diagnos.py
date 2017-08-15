@@ -32,10 +32,10 @@ def selectFiles(booleanVector):
     #might need to create some header specific to the student
     for i in range(0,7):
         if(booleanVector[i] == 1):
-            headerFiles.append('header' + str(i+1) + '.docx')
-            recipeFiles.append('recipe' + str(i+1) + '.docx')
+            headerFiles.append('Header' + str(i+1) + '.docx')
+            recipeFiles.append('Recipe' + str(i+1) + '.docx')
         else:
-            headerFiles.append('headerDone' + str(i+1) + '.docx')
+            headerFiles.append('HeaderDone' + str(i+1) + '.docx')
     return (recipeFiles, headerFiles)
 
 def mergeWordFiles(recipeFiles, header, name):
