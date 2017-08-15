@@ -1,6 +1,4 @@
 import csv
-import numpy as np
-import pandas as pd
 from os import listdir, makedirs, path
 from os.path import isfile, join
 from docx import Document
