@@ -3,16 +3,18 @@ import numpy as np
 import pandas as pd
 from docx import Document
 
-START_DATA = 1
-df = pd.read_csv('test.csv', sep = ';', header = 1)
+START_DATA = 2
+#df = pd.read_csv('test.csv', sep = ';', header = 1)
 req = [1, 4, 6, 6, 6, 5, 5]
 
 def readCSVFile(file_name):
     with open(file_name, newline='') as csv_file:
         reader = csv.reader(csv_file, delimiter=';', quotechar='|')
         reader.__next__()
+        reader.__next__()
         for row in reader:
             if(row[0] !=''):
+                print("creating file for", row[0])
                 createSingleRecipe(row)
             else:
                 break
@@ -22,7 +24,7 @@ def createSingleRecipe(row):
     isHelpNeeded = [0]*7
     for i in range(0,7):
         if(int(row[START_DATA + i]) < req[i]):
-            isHelpNeeded[i - 1] = 1
+            isHelpNeeded[i] = 1
     files = selectFiles(isHelpNeeded)
     return (mergeWordFiles(files[0],files[1], name))
 
@@ -43,10 +45,6 @@ def mergeWordFiles(recipeFiles, header, name):
     #or one can do it by manually selecting the paragraphs
     merged_document = createStandardHeader(name)
     del(merged_document.element.body[-1])
-    for element in merged_document.element.body:
-        print(element)
-    print(recipeFiles)
-    print(header)
     for fileName in header:
         sub_doc = Document(fileName)
         for i, element in enumerate(sub_doc.element.body):
@@ -58,9 +56,7 @@ def mergeWordFiles(recipeFiles, header, name):
         for element in sub_doc.element.body:
             merged_document.element.body.append(element)
     
-    for element in merged_document.sections:
-        print(element)
-    merged_document.save(name + 'merged.docx')
+    merged_document.save('recept/' + name + '.docx')
 
 def createStandardHeader(name):
     document = Document()
@@ -73,4 +69,4 @@ def createStandardHeader(name):
 #pasteRecipe(1,1)
 #mergeWordFiles(['test1.docx','test2.docx'],'test1.docx')
 #os.listdir(<path>)
-readCSVFile('test.csv')
+readCSVFile('resultat/diagnos-te1a.csv')
