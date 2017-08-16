@@ -72,5 +72,9 @@ def createStandardHeader(name):
             ' just dig så bra förutsättningar som möjligt att lyckas med matematik!\n')
     return(document)
 
+
+#files = selectFiles([1]*7)
+#mergeWordFiles("className", files[0],files[1], "test")
+
 for f in listdir(RESULTS_FOLDER):
     readCSVFile(join(RESULTS_FOLDER, f))
