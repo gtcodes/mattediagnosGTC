@@ -3,7 +3,7 @@ from os import listdir, makedirs, path
 from os.path import isfile, join
 from docx import Document
 
-START_DATA = 2 #What column the data starts at, 0 indexed so START_DATA = 2 would mean that the first data column is column C
+START_DATA = 1 #What column the data starts at, 0 indexed so START_DATA = 2 would mean that the first data column is column C
 RESULTS_FOLDER = 'resultat'
 RECIPE_FOLDER = 'recept'
 req = [1, 4, 6, 6, 6, 5, 5]
@@ -18,7 +18,7 @@ def readCSVFile(file_name):
         if not path.exists(join(RECIPE_FOLDER, className)):
             makedirs(join(RECIPE_FOLDER, className))
         
-        for row in reader[2:]:
+        for row in reader[1:]:
             if(row[0] !=''):
                 print("creating file for", row[0])
                 createSingleRecipe(className, row)
@@ -28,7 +28,7 @@ def readCSVFile(file_name):
 def createSingleRecipe(className, row):
     name = row[0].strip()                               # First cell is the name of the test taker
     name = ' '.join(name.split(', ')[::-1]).strip()     # Change namd format from "Hoogendijk, Kevin" to "Kevin Hoogendijk"    
-    
+
     isHelpNeeded = [0]*7    
     for i in range(0,7):
         if(int(row[START_DATA + i]) < req[i]):          # If the score on this part is less than required 
@@ -75,7 +75,9 @@ def createStandardHeader(name):
     document = Document()
     document.add_heading('Ditt matterecept ' + name + '!', 0)
     document.add_paragraph('Speciellt framtaget för att du ska kunna arbeta med rätt saker som ger'
-            ' just dig så bra förutsättningar som möjligt att lyckas med matematik!\n')
+            ' just dig så bra förutsättningar som möjligt att lyckas med matematik! '
+            'Dessa uppgifter får du gärna göra under jokertiden där våra underbara Jokerlärare kan hjälpa dig. '
+            'Jokrarna har även ett test på varje del som du får göra för att visa att du bemästrat den delen.')
     return(document)
 
 #A document for the pupils that doesnt need ant recipe, a congratulation
