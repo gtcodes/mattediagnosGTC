@@ -26,13 +26,19 @@ def readCSVFile(file_name):
                 break
 
 def createSingleRecipe(className, row):
-    name = row[0]                                       #First cell is the name of the test taker
+    name = row[0].strip()                               # First cell is the name of the test taker
+    name = ' '.join(name.split(', ')[::-1]).strip()     # Change namd format from "Hoogendijk, Kevin" to "Kevin Hoogendijk"    
+    
     isHelpNeeded = [0]*7    
     for i in range(0,7):
-        if(int(row[START_DATA + i]) < req[i]):          #If the score on this part is less than required 
-            isHelpNeeded[i] = 1                         #Help needed is set to one for this part
-    files = selectFiles(isHelpNeeded)
-    mergeWordFiles(className, files[0],files[1], name)
+        if(int(row[START_DATA + i]) < req[i]):          # If the score on this part is less than required 
+            isHelpNeeded[i] = 1                         # Help needed is set to one for this part
+    
+    if(isHelpNeeded != [0]*7):
+        files = selectFiles(isHelpNeeded)
+        mergeWordFiles(className, files[0],files[1], name)
+    else:
+        createGZCard(className, name)
 
 #Depending on what parts are needed for the test taker, different files are selected
 def selectFiles(booleanVector):
@@ -67,11 +73,18 @@ def mergeWordFiles(className, recipeFiles, header, name):
 #A standard header is created that is needed for each document, the rest of the headers are later appended to this.
 def createStandardHeader(name):
     document = Document()
-    document.add_heading('Ditt matterecept' + name + '!', 0)
+    document.add_heading('Ditt matterecept ' + name + '!', 0)
     document.add_paragraph('Speciellt framtaget för att du ska kunna arbeta med rätt saker som ger'
             ' just dig så bra förutsättningar som möjligt att lyckas med matematik!\n')
     return(document)
 
+#A document for the pupils that doesnt need ant recipe, a congratulation
+def createGZCard(className, name):
+    document = Document()
+    document.add_heading(name + ' — ditt matterecept är tomt!', 0)
+    document.add_paragraph('Du klarade gränserna på alla delar vilket betyder att det inte finns någon'
+            ' del som behöver förbättras. Bra jobbat!')
+    document.save(join(RECIPE_FOLDER, className.strip(), name + 'grattis.docx'))
 
 #files = selectFiles([1]*7)
 #mergeWordFiles("className", files[0],files[1], "test")
