@@ -14,9 +14,6 @@ Efternamn;Förnamn;negativa tal;Potenser;bråk;Procent;Algebra;Geometri;Ekvation
 
 Det är viktigt att fälten är i den ordningen eftersom recepten är specifika och just nu matchar vi inte mot kolumnen och väljer rätt recept. Istället antas filen följa ovanstående format.
 
-Första cellen på första raden antas innehålla klassnamn
-Andra raden antas innehålla columnbeskrivningar
-datan antas börja på tredje raden
-Fyll i START\_DATA för att ange vilken kolumn datan börjar.
+Första cellen på första raden antas innehålla klassnamn. Andra raden antas innehålla columnbeskrivningar och datan antas börja på tredje raden. Fyll i START\_DATA för att ange vilken rad datan börjar på.
 
 
