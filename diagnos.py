@@ -6,6 +6,7 @@ from docx import Document
 START_DATA = 1 #What column the data starts at, 0 indexed so START_DATA = 2 would mean that the first data column is column C
 RESULTS_FOLDER = 'resultat'
 RECIPE_FOLDER = 'recept'
+WORD_FOLDER = 'WordFiles/' #assumes path into the folder (end with /)
 req = [1, 4, 6, 6, 6, 5, 5]
 
 def readCSVFile(file_name):
@@ -46,10 +47,10 @@ def selectFiles(booleanVector):
     headerFiles = []
     for i in range(0,7):
         if(booleanVector[i] == 1):
-            headerFiles.append('Header' + str(i+1) + '.docx')
-            recipeFiles.append('Recipe' + str(i+1) + '.docx')
+            headerFiles.append(WORD_FOLDER + 'Header' + str(i+1) + '.docx')
+            recipeFiles.append(WORD_FOLDER + 'Recipe' + str(i+1) + '.docx')
         else:
-            headerFiles.append('HeaderDone' + str(i+1) + '.docx')
+            headerFiles.append(WORD_FOLDER + 'HeaderDone' + str(i+1) + '.docx')
     return (recipeFiles, headerFiles)
 
 def mergeWordFiles(className, recipeFiles, header, name):
