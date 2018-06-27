@@ -3,6 +3,7 @@ from os import listdir, makedirs, path
 from os.path import isfile, join
 from docx import Document
 
+STANDARD_NAME_FORMAT = 1    #1 if the name is: <last, first> it will convert it to <first last>. 0 will not change the name at all.
 START_DATA = 1 #What column the data starts at, 0 indexed so START_DATA = 2 would mean that the first data column is column C
 RESULTS_FOLDER = 'resultat'
 RECIPE_FOLDER = 'recept'
@@ -27,8 +28,7 @@ def readCSVFile(file_name):
                 break
 
 def createSingleRecipe(className, row):
-    name = row[0].strip()                               # First cell is the name of the test taker
-    name = ' '.join(name.split(', ')[::-1]).strip()     # Change namd format from "Hoogendijk, Kevin" to "Kevin Hoogendijk"    
+    name = getName(row, STANDARD_NAME_FORMAT)
 
     isHelpNeeded = [0]*7    
     for i in range(0,7):
@@ -40,6 +40,12 @@ def createSingleRecipe(className, row):
         mergeWordFiles(className, files[0],files[1], name)
     else:
         createGZCard(className, name)
+
+def getName(row, nameFormat):
+    name = row[0].strip()                               # First cell is the name of the test taker
+    if(nameFormat = 1):
+        name = ' '.join(name.split(', ')[::-1]).strip()     # Change namd format from "Hoogendijk, Kevin" to "Kevin Hoogendijk"
+    return name
 
 #Depending on what parts are needed for the test taker, different files are selected
 def selectFiles(booleanVector):

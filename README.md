@@ -10,10 +10,10 @@ För att köra programmet, kalla på ./diagnos.py med en mapp som har namnet ang
 
 Den tar som input en csv fil som innehåller följande fält:
 
-Efternamn;Förnamn;negativa tal;Potenser;bråk;Procent;Algebra;Geometri;Ekvationer
+namn;negativa tal;Potenser;bråk;Procent;Algebra;Geometri;Ekvationer
 
 Det är viktigt att fälten är i den ordningen eftersom recepten är specifika och just nu matchar vi inte mot kolumnen och väljer rätt recept. Istället antas filen följa ovanstående format.
 
-Första cellen på första raden antas innehålla klassnamn. Andra raden antas innehålla columnbeskrivningar och datan antas börja på tredje raden. Fyll i START\_DATA för att ange vilken rad datan börjar på.
+Första cellen på första raden antas innehålla klassnamn. Dem andra columnerna på första raden ignoreras. Datan antas börja på andra raden.
 
-
+Om namnen har formatet lastname, firstname kan man ändra STANDARD\_NAME\_FORMAT till 1 så görs det om till att bli firstname lastname.
