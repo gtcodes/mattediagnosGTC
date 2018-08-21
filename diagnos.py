@@ -2,16 +2,19 @@ import csv
 from os import listdir, makedirs, path
 from os.path import isfile, join
 from docx import Document
+import codecs
 
 STANDARD_NAME_FORMAT = 1    #1 if the name is: <last, first> it will convert it to <first last>. 0 will not change the name at all.
 START_DATA = 1 #What column the data starts at, 0 indexed so START_DATA = 2 would mean that the first data column is column C
 RESULTS_FOLDER = 'resultat'
 RECIPE_FOLDER = 'recept'
-WORD_FOLDER = 'WordFiles/' #assumes path into the folder (end with /)
+WORD_FOLDER = 'wordFiles/' #assumes path into the folder (end with /)
+FILE_ENCODING = 'iso-8859-1' #you can check the encoding with the file command for example
+
 req = [1, 4, 6, 6, 6, 5, 5]
 
 def readCSVFile(file_name):
-    with open(file_name, newline='') as csv_file:
+    with codecs.open(file_name, mode ='r', encoding=FILE_ENCODING) as csv_file:
         reader = csv.reader(csv_file, delimiter=';', quotechar='|')
         reader = list(reader)
         className = reader[0][0]
@@ -30,20 +33,22 @@ def readCSVFile(file_name):
 def createSingleRecipe(className, row):
     name = getName(row, STANDARD_NAME_FORMAT)
 
-    isHelpNeeded = [0]*7    
-    for i in range(0,7):
-        if(int(row[START_DATA + i]) < req[i]):          # If the score on this part is less than required 
-            isHelpNeeded[i] = 1                         # Help needed is set to one for this part
-    
-    if(isHelpNeeded != [0]*7):
-        files = selectFiles(isHelpNeeded)
-        mergeWordFiles(className, files[0],files[1], name)
+    isHelpNeeded = [0]*7
+    if(row[START_DATA]!=''):
+        for i in range(0,7):
+            isHelpNeeded[i]=int(row[START_DATA + i]) < req[i]          # If the score on this part is less than required 
+        
+        if(isHelpNeeded != [0]*7):
+            files = selectFiles(isHelpNeeded)
+            mergeWordFiles(className, files[0],files[1], name)
+        else:
+            createGZCard(className, name)
     else:
-        createGZCard(className, name)
+        createPersonMissingFile(className, name)
 
 def getName(row, nameFormat):
     name = row[0].strip()                               # First cell is the name of the test taker
-    if(nameFormat = 1):
+    if(nameFormat == 1):
         name = ' '.join(name.split(', ')[::-1]).strip()     # Change namd format from "Hoogendijk, Kevin" to "Kevin Hoogendijk"
     return name
 
@@ -94,6 +99,11 @@ def createGZCard(className, name):
     document.add_paragraph('Du klarade gränserna på alla delar vilket betyder att det inte finns någon'
             ' del som behöver förbättras. Bra jobbat!')
     document.save(join(RECIPE_FOLDER, className.strip(), name + 'grattis.docx'))
+
+def createPersonMissingFile(className, name):
+    document = Document()
+    document.add_heading(name + ": Du skrev tyvärr inte diagnosen men får gärna göra det på valfri jokertid!")
+    document.save(join(RECIPE_FOLDER, className.strip(), name + 'notThere.docx'))
 
 #files = selectFiles([1]*7)
 #mergeWordFiles("className", files[0],files[1], "test")

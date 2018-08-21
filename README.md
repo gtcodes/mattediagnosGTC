@@ -17,3 +17,5 @@ Det är viktigt att fälten är i den ordningen eftersom recepten är specifika 
 Första cellen på första raden antas innehålla klassnamn. Dem andra columnerna på första raden ignoreras. Datan antas börja på andra raden.
 
 Om namnen har formatet lastname, firstname kan man ändra STANDARD\_NAME\_FORMAT till 1 så görs det om till att bli firstname lastname.
+
+för att behålla å,ä,ö i csv bör man spara som CSV (Kommaavgränsad) i excell.
