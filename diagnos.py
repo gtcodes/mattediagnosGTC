@@ -9,7 +9,7 @@ START_DATA = 1 #What column the data starts at, 0 indexed so START_DATA = 2 woul
 RESULTS_FOLDER = 'resultat'
 RECIPE_FOLDER = 'recept'
 WORD_FOLDER = 'wordFiles/' #assumes path into the folder (end with /)
-FILE_ENCODING = 'iso-8859-1' #you can check the encoding with the file command for example
+FILE_ENCODING = 'latin-1' #you can check the encoding with the file command for example
 
 req = [1, 4, 6, 6, 6, 5, 5]
 
